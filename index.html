@@ -1,0 +1,66 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>GitHub Files Chat (Read-only)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      body { font-family: Arial, sans-serif; margin: 1rem; max-width:900px; }
+      #messages { height: 60vh; overflow-y: auto; border: 1px solid #ddd; padding: 0.5rem; background:#fff; }
+      #input { display:flex; gap:0.5rem; margin-top: 0.5rem; }
+      #input input { flex:1; padding:0.5rem; }
+      .system { color:#666; font-style:italic; }
+      .message { padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+      .user { font-weight:600; margin-right:6px; }
+      .time { color:#999; font-size:0.85em; margin-left:8px; }
+      #topbar { display:flex; gap:1rem; align-items:center; justify-content:space-between; }
+      #usernameDisplay { font-weight:600; color:#333; }
+      #initialNameModal { position:fixed; inset:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; }
+      #initialNameModal .box { background:#fff; padding:1rem 1.25rem; border-radius:6px; width:320px; box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+      #initialNameModal input { width:100%; padding:0.5rem; margin-top:0.5rem; }
+      .small { font-size: 0.85rem; color:#666; }
+      .note { margin-top:12px; color:#555; }
+      button[disabled] { opacity:0.5; cursor:not-allowed; }
+    </style>
+  </head>
+  <body>
+    <div id="topbar">
+      <h2 style="margin:0">GitHub Files Chat</h2>
+      <div>
+        <span class="small">You are: </span>
+        <span id="usernameDisplay">—</span>
+        <button id="changeNameBtn">Change</button>
+      </div>
+    </div>
+
+    <div id="messages" aria-live="polite"></div>
+
+    <div id="input">
+      <input id="msg" autocomplete="off" placeholder="Posting is disabled on this site (read-only) — see notes below." />
+      <button id="send" disabled>Send</button>
+    </div>
+
+    <div class="note">
+      This site displays messages stored as files in the repository's <code>messages/</code> folder.
+      Posting is disabled because GitHub write access requires authentication or a server-side bot.
+      If you want posting enabled (so users don't need to paste tokens), ask me and I can:
+      - set up a small server/bot that holds a write token and accepts posts, or
+      - add instructions and UI to let individual users paste a PAT (previous approach), or
+      - switch to a serverless backend (Firebase/Supabase) to allow posting without per-user tokens.
+    </div>
+
+    <!-- initial name modal (shown if no name stored) -->
+    <div id="initialNameModal" style="display:none" aria-hidden="true">
+      <div class="box" role="dialog" aria-modal="true" aria-label="Choose display name">
+        <div><strong>Choose a display name</strong></div>
+        <div class="small">This name will be used for messages and stored only in your browser.</div>
+        <input id="initialNameInput" placeholder="Enter display name" />
+        <div style="margin-top:8px; display:flex; gap:8px; justify-content:flex-end;">
+          <button id="initialNameSave">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/client.js"></script>
+  </body>
+</html>
